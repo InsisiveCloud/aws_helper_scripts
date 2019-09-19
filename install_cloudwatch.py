@@ -98,8 +98,6 @@ def main(args):
     filters = parse_filters(args)
     client = boto3.client('ec2')
     for region in all_regions(client):
-        if region == 'us-east-1':
-            import ipdb; ipdb.set_trace()
         ec2_client = boto3.client('ec2', region_name=region)
         all_instances = fetch_instances(ec2_client, filters)
         for instance in all_instances:
