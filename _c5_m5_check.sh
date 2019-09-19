@@ -77,7 +77,12 @@ check_fstab () {
     done </tmp/device_names
 
     if [ -s /tmp/device_names ]; then
-
+        if [ $# -eq 0 ]
+        then
+            RESPONSE=""
+        else
+            RESPONSE=$1
+        fi
         case "$RESPONSE" in
             [yY]|[yY][eE][sS])                                              # If answer is yes, keep the changes to /etc/fstab
                     echo "Writing changes to /etc/fstab..."

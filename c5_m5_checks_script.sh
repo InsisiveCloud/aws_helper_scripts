@@ -59,7 +59,7 @@ then
     aws ssm send-command \
         --document-name "AWS-RunRemoteScript" \
         --targets $targets \
-        --parameters '{"sourceType":["GitHub"],"sourceInfo":["{\"owner\": \"InsisiveCloud\",\"repository\": \"aws_helper_scripts\", \"path\":\"c5_m5_checks_script.sh\"}"],"commandLine":["--fstab-rewrite $rewrite"]}'
+        --parameters '{"sourceType":["GitHub"],"sourceInfo":["{\"owner\": \"InsisiveCloud\",\"repository\": \"aws_helper_scripts\", \"path\":\"c5_m5_checks_script.sh\"}"],"commandLine":["$rewrite"]}'
 
     echo 'OK'
 else
