@@ -20,7 +20,7 @@ Either filters or instance id list is required in order to execute script
 
 ### File: c5_m5_checks_script.sh
 
-You can use this script to do the pre-requisites checks before changing the instance type to M5/C5. This script performs the following actions:
+ > We can use this script to do the pre-requisites checks before changing the instance type to M5/C5. This script performs the following actions:
 
     - Verify if NVMe module is installed on your instance. If yes then it will verify if it is loaded in the intiramfs image.
 
