@@ -1,7 +1,11 @@
 ## AWS Helper Scripts
 
 ### File: install_cloudwatch.py
- > This script is use to install CloudWatchAgent on the EC2 instances, 
+ > This script is use to install CloudWatchAgent on the EC2 instances.
+ > The Script requires to point to the desiered account using AWS Configure.
+ > The Script also requires that ssm is installed on the local machine that is executing the script.
+ > This Script will work for instances across all reagions.
+
 
 ```
 $ python install_cloudwatch.py
