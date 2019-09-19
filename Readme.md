@@ -39,6 +39,6 @@ You can use this script to do the pre-requisites checks before changing the inst
 
 - Run the script as a "root" user or "sudo" otherwise it would fail with the following message "This script must be run as root"
 
-    `# sudo ./c5_m5_checks_script.sh`
+    `# sudo ./c5_m5_checks_script.sh --targets Key=<key-name>,Values=<v1,v2,v3> [...]`
 
 ----------------------------------
