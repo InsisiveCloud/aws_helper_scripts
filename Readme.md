@@ -43,6 +43,6 @@ Either filters or instance id list is required in order to execute script
 
 - Run the script as a "root" user or "sudo" otherwise it would fail with the following message "This script must be run as root"
 
-    `# sudo ./c5_m5_checks_script.sh --targets \"Key=<key-name>,Values=<v1,v2,v3> [...]\" --fstab-rewrite {y|n}` \n
+    `# sudo ./c5_m5_checks_script.sh --targets \"Key=<key-name>,Values=<v1,v2,v3> [...]\" --fstab-rewrite {y|n}`
 
 ----------------------------------
