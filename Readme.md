@@ -1,10 +1,10 @@
 ## AWS Helper Scripts
 
 ### File: install_cloudwatch.py
- > This script is use to install CloudWatchAgent on the EC2 instances.
- > The Script requires to point to the desiered account using AWS Configure.
- > The Script also requires that ssm is installed on the local machine that is executing the script.
- > This Script will work for instances across all reagions.
+ - This script is use to install CloudWatchAgent on the EC2 instances.
+ - The Script requires to point to the desiered account using AWS Configure.
+ - The Script also requires that ssm is installed on the local machine that is executing the script.
+ - This Script will work for instances across all reagions.
 
 
 ```
@@ -36,13 +36,13 @@ Either filters or instance id list is required in order to execute script
 
 
 ------- Running the scrips -------
-- Get the script from github by clonning it onto your local machine ( that you want to verify, linux and its variants) 
+- Get the script from github by clonning it onto your local machine that you want to verify (linux and its variants) 
 
- `git clone https://github.com/InsisiveCloud/aws_helper_scripts.git
-  cd aws_helper_scripts
-  execute the bash script using the command bash _c5_m5_check.sh`
+ `- git clone https://github.com/InsisiveCloud/aws_helper_scripts.git
+  - cd aws_helper_script
+ `- execute the bash script using the command bash _c5_m5_check.sh`
 
-- In order to execute the verification script for a remote machine
+- In order to execute the verification script on a remote machine
 
 - Make the script executable
 
