@@ -36,23 +36,26 @@ Either filters or instance id list is required in order to execute script
 
 
 ------- Running the scrips -------
-- Get the script from github by clonning it onto your local machine that you want to verify (linux and its variants) 
+ > Get the script from github by clonning it onto your local machine that you want to verify (linux and its variants) 
 
- `- git clone https://github.com/InsisiveCloud/aws_helper_scripts.git
-  - cd aws_helper_script
- `- execute the bash script using the command bash _c5_m5_check.sh`
+```
+ - git clone https://github.com/InsisiveCloud/aws_helper_scripts.git
+ - cd aws_helper_script
+ - execute the bash script using the command:  bash _c5_m5_check.sh`
+```
 
-- In order to execute the verification script on a remote machine
+ > In order to execute the verification script on a remote machine
 
-- Make the script executable
+```
+	- Make the script executable
 
     `# chmod +x c5_m5_checks_script.sh`
 
-- Run the script as a "root" user or "sudo" otherwise it would fail with the following message "This script must be run as root"
+	- Run the script as a "root" user or "sudo" otherwise it would fail with the following message "This script must be run as root"
 
     `# sudo ./c5_m5_checks_script.sh --targets \"Key=<key-name>,Values=<v1,v2,v3> [...]\" --fstab-rewrite {y|n}`
-    
-- For more help on executing scripts on remote machines see: https://docs.aws.amazon.com/systems-manager/latest/userguide/send-commands-multiple.html
+```    
+	- For more help on executing scripts on remote machines see: https://docs.aws.amazon.com/systems-manager/latest/userguide/send-commands-multiple.html
 
 
 ----------------------------------
