@@ -26,7 +26,7 @@ find_distro=`cat /etc/os-release |sed -n 's|^ID="\([a-z]\{4\}\).*|\1|p'`      # 
         echo -e "\n\nERROR  NVMe Module is not loaded in the initramfs image.\n\t- Please run the following command on your instance to recreate initramfs:"
         echo -e '\t# sudo dracut -f -v'
         fi
-
+    
     elif [[ "${find_distro}" == "amzn" ]]; then
         # Amazon Linux
         lsinitrd /boot/initramfs-$(uname -r).img|grep nvme > /dev/null 2>&1
@@ -44,7 +44,7 @@ find_distro=`cat /etc/os-release |sed -n 's|^ID="\([a-z]\{4\}\).*|\1|p'`      # 
         echo -e "\n\nERROR  NVMe Module is not loaded in the initramfs image.\n\t- Please run the following command on your instance to recreate initramfs:"
         echo -e '\t# sudo dracut -f -v'
         fi
-
+        
     elif [ -f /etc/debian_version ] ; then
         # Distribution is debian based(Debian/Ubuntu)
         lsinitramfs /boot/initrd.img-$(uname -r)|grep nvme > /dev/null 2>&1
@@ -54,7 +54,7 @@ find_distro=`cat /etc/os-release |sed -n 's|^ID="\([a-z]\{4\}\).*|\1|p'`      # 
         echo -e '\t# sudo update-initramfs -c -k all'
         fi
 
-    else
+    else 
         echo -e "\n\nUnsupported OS for this script."
         echo -e "\n\n------------------------------------------------"
         exit 1
@@ -77,12 +77,11 @@ check_fstab () {
     done </tmp/device_names
 
     if [ -s /tmp/device_names ]; then
-        if [ $# -eq 0 ]
-        then
-            RESPONSE=""
-        else
-            RESPONSE=$1
-        fi
+
+        echo -e "\n\nERROR  Your fstab file contains device names. Mount the partitions using UUID's before changing an instance type to Nitro."                                                         # Outputs the new fstab file
+
+        printf "\nEnter y to replace device names with UUID in /etc/fstab file to make it compatible for NVMe block device names.\nEnter n to keep the file as-is with no modification (y/n) "
+        read RESPONSE;
         case "$RESPONSE" in
             [yY]|[yY][eE][sS])                                              # If answer is yes, keep the changes to /etc/fstab
                     echo "Writing changes to /etc/fstab..."
@@ -92,22 +91,25 @@ check_fstab () {
                     echo -e "\nOriginal fstab file is stored as /etc/fstab.backup.$time_stamp"
                     rm /etc/fstab.modified.$time_stamp
                     ;;
-            [nN]|[nN][oO]|"")  # If answer is no, or if the user just pressed Enter
-                    echo -e "Aborting: Not saving changes...\nPrinting correct fstab file below:\n\n"
+            [nN]|[nN][oO]|"")                                               # If answer is no, or if the user just pressed Enter
+                    echo -e "Aborting: Not saving changes...\nPrinting correct fstab file below:\n\n"                  # don't save the new fstab file
                     cat /etc/fstab.modified.$time_stamp
                     rm /etc/fstab.backup.$time_stamp
                     rm /etc/fstab.modified.$time_stamp
                     ;;
-            *)   # If answer is anything else, exit and don't save changes
-                    echo "Invalid Response"  # to fstab
+            *)                                                              # If answer is anything else, exit and don't save changes
+                    echo "Invalid Response"                                 # to fstab
                     echo "Exiting"
                     rm /etc/fstab.backup.$time_stamp
                     rm /etc/fstab.modified.$time_stamp
                     exit 1
                     echo -e "------------------------------------------------"
                     ;;
+    
         esac
-    else
+        rm /tmp/device_names
+
+    else 
         rm /etc/fstab.backup.$time_stamp
         rm /etc/fstab.modified.$time_stamp
         echo -e "\n\nOK     fstab file looks fine and does not contain any device names. "
@@ -129,25 +131,33 @@ if [ `id -u` -ne 0 ]; then                                              # Checks
         exit 1
 fi
 
-(modinfo nvme || grep 'nvme' /boot/System.map-$(uname -r)) > /dev/null 2>&1
+(grep 'nvme' /boot/System.map-$(uname -r)) > /dev/null 2>&1
 if [ $? -ne 0 ]
     then
-    # NVMe Module is not installed. 
-    echo -e "------------------------------------------------\nERROR  NVMe Module is not available on your instance. \n\t- Please install NVMe module before changing your instance type to M5/C5. Look at the following link for further guidance:"
-    echo -e "\t> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html"
+    # NVMe modules is not built into the kernel
+    (modinfo nvme) > /dev/null 2>&1
+    if [ $? -ne 0 ]
+        then
+        # NVMe Module is not installed. 
+        echo -e "------------------------------------------------\nERROR  NVMe Module is not available on your instance. \n\t- Please install NVMe module before changing your instance type to Nitro. Look at the following link for further guidance:"
+        echo -e "\t> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html"
 
-else 
+    else
+        echo -e "------------------------------------------------\n"
+        echo -e "OK     NVMe Module is installed and available on your instance"
+        check_NVMe_in_initrd                # Calling function to check if NVMe module is loaded in initramfs. 
+    fi
+else
+    # NVMe modules is built into the kernel
     echo -e "------------------------------------------------\n"
     echo -e "OK     NVMe Module is installed and available on your instance"
-    check_NVMe_in_initrd                # Calling function to check if NVMe module is loaded in initramfs. 
 fi
-
 
 modinfo ena > /dev/null 2>&1
 if [ $? -ne 0 ] 
     then
     # ENA Module is not installed. 
-    echo -e "\n\nERROR  ENA Module is not available on your instance. \n\t- Please install ENA module before changing your instance type to M5/C5. Look at the following link for further guidance:"
+    echo -e "\n\nERROR  ENA Module is not available on your instance. \n\t- Please install ENA module before changing your instance type to Nitro. Look at the following link for further guidance:"
     echo -e "\t> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html#enhanced-networking-ena-linux"
 
 else 
