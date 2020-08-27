@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import time
 import boto3
 from botocore.exceptions import ClientError
 import json
@@ -77,6 +77,7 @@ def install_cloudwatch_agent(ssm, instance):
         TimeoutSeconds=600,
     )
     command_id = response['Command']['CommandId']
+    time.sleep(2)
     output = ssm.get_command_invocation(
         CommandId=command_id, InstanceId=instance['instance_id']
     )
