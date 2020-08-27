@@ -62,6 +62,8 @@ then
         --parameters '{"sourceType":["GitHub"],"sourceInfo":["{\"owner\": \"InsisiveCloud\",\"repository\": \"aws_helper_scripts\"}"],"commandLine":["_c5_m5_check.sh $rewrite"]}'
 
     echo 'OK'
+    echo 'Copy the CommandId from the output above and run the below command with `CommandId` and `InstanceId` to get the output'
+    echo '$ aws ssm get-command-invocation --command-id <command-id> --instance-id <instance-id> --plugin-name runShellScript'
 else
     echo -e "\nInvalid Parameters
     expected: # bash c5_m5_checks_script.sh --targets \"Key=<key-name>,Values=<v1,v2,v3> [...]\" --fstab-rewrite {y|n} \n
