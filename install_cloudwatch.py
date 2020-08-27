@@ -68,10 +68,10 @@ def install_cloudwatch_agent(ssm, instance):
     response = ssm.send_command(
         Targets=[{'Key': 'InstanceIds', 'Values': [instance['instance_id']]}],
         DocumentName='AWS-ConfigureAWSPackage',
-        DocumentVersion='LATEST',
+        DocumentVersion='$LATEST',
         Parameters={
             "action": ['Install'],
-            'version': ['$LATEST'],
+            'version': ['LATEST'],
             'name': ['AmazonCloudWatchAgent']
         },
         TimeoutSeconds=600,
